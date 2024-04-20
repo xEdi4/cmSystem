@@ -21,8 +21,7 @@ public class ProveedorService {
     public List<Proveedor> getProveedores() {
         return proveedorRepository.findAll();
     }
-
-    //No
+    
     public Proveedor getProveedor(Long id) {
         return proveedorRepository.findById(id)
                 .orElseThrow(() ->
