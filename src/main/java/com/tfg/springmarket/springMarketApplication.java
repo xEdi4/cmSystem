@@ -1,13 +1,13 @@
-package com.tfg.cmsystem;
+package com.tfg.springmarket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CmsystemApplication {
+public class springMarketApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CmsystemApplication.class, args);
+        SpringApplication.run(springMarketApplication.class, args);
     }
 
 }

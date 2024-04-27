@@ -1,7 +1,7 @@
-package com.tfg.cmsystem.controllers;
+package com.tfg.springmarket.controllers;
 
-import com.tfg.cmsystem.entities.Proveedor;
-import com.tfg.cmsystem.services.ProveedorService;
+import com.tfg.springmarket.model.entities.Proveedor;
+import com.tfg.springmarket.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

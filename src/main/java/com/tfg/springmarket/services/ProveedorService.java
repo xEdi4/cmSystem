@@ -1,8 +1,8 @@
-package com.tfg.cmsystem.services;
+package com.tfg.springmarket.services;
 
-import com.tfg.cmsystem.entities.Proveedor;
-import com.tfg.cmsystem.exceptions.ProveedorNotFoundException;
-import com.tfg.cmsystem.repositories.ProveedorRepository;
+import com.tfg.springmarket.model.entities.Proveedor;
+import com.tfg.springmarket.exceptions.ProveedorNotFoundException;
+import com.tfg.springmarket.model.repositories.ProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class ProveedorService {
     public List<Proveedor> getProveedores() {
         return proveedorRepository.findAll();
     }
-    
+
     public Proveedor getProveedor(Long id) {
         return proveedorRepository.findById(id)
                 .orElseThrow(() ->
