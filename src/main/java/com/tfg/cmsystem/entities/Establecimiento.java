@@ -9,23 +9,23 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "proveedores")
-public class Proveedor implements Serializable {
+@Table(name = "establecimientos")
+public class Establecimiento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    private String empresa;
+    private String nombre;
 
     @Column(unique = true)
     private String email;
 
     @Column(unique = true)
-    private String teléfono;
+    private String telefono;
 
-    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "establecimiento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Producto> productos;
 
 
