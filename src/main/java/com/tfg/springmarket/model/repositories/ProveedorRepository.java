@@ -1,6 +1,6 @@
-package com.tfg.cmsystem.repositories;
+package com.tfg.springmarket.model.repositories;
 
-import com.tfg.cmsystem.entities.Proveedor;
+import com.tfg.springmarket.model.entities.Proveedor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,13 +1,17 @@
-package com.tfg.cmsystem.entities;
+package com.tfg.springmarket.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "proveedores")
 public class Proveedor implements Serializable {
 
@@ -23,5 +27,8 @@ public class Proveedor implements Serializable {
 
     @Column(unique = true)
     private String teléfono;
+    
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Producto> productos;
 
 }
