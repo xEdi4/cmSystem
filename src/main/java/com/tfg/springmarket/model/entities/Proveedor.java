@@ -31,4 +31,15 @@ public class Proveedor implements Serializable {
     @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Producto> productos;
 
+    @OneToOne(mappedBy = "proveedor")
+    private Establecimiento establecimiento;
+
+    public Establecimiento getEstablecimiento() {
+        return establecimiento;
+    }
+
+    public void setEstablecimiento(Establecimiento establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
 }
