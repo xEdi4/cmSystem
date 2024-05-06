@@ -4,15 +4,20 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "usuarios")
-public class Usuario implements Serializable {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +25,48 @@ public class Usuario implements Serializable {
 
     private String nombre;
 
+    private String apellidos;
+
+    private String usuario;
+
     private String contraseña;
 
-    private String email;
+    @Enumerated(value = EnumType.STRING)
+    Rol rol;
 
-    private String estado;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(rol.name()));
+    }
 
-    private String rol;
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 
 }
