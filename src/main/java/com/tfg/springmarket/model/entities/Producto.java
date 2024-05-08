@@ -24,6 +24,11 @@ public class Producto implements Serializable {
     private String descripcion;
 
     @ManyToOne
+    @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
+
+    @ManyToOne
+    @JoinColumn(name = "establecimiento_id")
+    private Establecimiento establecimiento;
     
 }
