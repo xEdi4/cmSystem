@@ -28,6 +28,4 @@ public class Proveedor implements Serializable {
     @Column(unique = true)
     private String teléfono;
 
-    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL)
-    private List<Producto> productos;
 }
