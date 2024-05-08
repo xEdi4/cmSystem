@@ -41,22 +41,4 @@ public class ProveedorService {
         proveedorRepository.deleteById(id);
     }
 
-    public Producto addProducto(Long proveedorId, Producto producto) {
-        Proveedor proveedor = proveedorRepository.findById(proveedorId)
-                .orElseThrow(() -> new ProveedorNotFoundException("Proveedor no encontrado"));
-
-        producto.setProveedor(proveedor);
-        Producto savedProduct = proveedorRepository.save(producto); // Guarda el producto asociado al proveedor
-
-        // Agregar el producto al establecimiento
-        Establecimiento establecimiento = proveedor.getEstablecimiento();
-        if (establecimiento != null) {
-            producto.setEstablecimiento(establecimiento);
-            establecimiento.getProductos().add(producto);
-            establecimientoRepository.save(establecimiento);
-        }
-
-        return savedProduct;
-    }
-
 }
