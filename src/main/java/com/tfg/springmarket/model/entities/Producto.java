@@ -23,6 +23,10 @@ public class Producto implements Serializable {
 
     private String descripcion;
 
+    private Float precio;
+
+    private Integer stock;
+
     @ManyToOne
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
