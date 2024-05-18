@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/productos")
@@ -21,8 +23,15 @@ public class ProductoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Producto>> getProductos() {
-        List<Producto> allProductos = productoService.getProductos();
+    public ResponseEntity<List<Producto>> getProductos(@RequestParam Optional<Long> proveedor, @RequestParam Optional<Long> establecimiento) {
+        List<Producto> allProductos = new ArrayList<>();
+        if(proveedor.isPresent()) {
+            allProductos = productoService.getProductosByProveedor(proveedor.get());
+        }else if(establecimiento.isPresent()){
+            allProductos = productoService.getProductosByEstablecimiento(establecimiento.get());
+        }else {
+            allProductos = productoService.getProductos();
+        }
         return new ResponseEntity<>(allProductos, HttpStatus.OK);
     }
 
@@ -33,14 +42,15 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<Producto> addProducto(@RequestBody Producto producto) {
-        Producto theProducto = productoService.addProducto(producto);
+    public ResponseEntity<Producto> addProducto(@RequestBody Producto producto, @RequestParam Optional<Long> proveedor, @RequestParam Optional<Long> establecimiento) {
+        Producto theProducto = productoService.addProducto(producto, proveedor, establecimiento);
         return new ResponseEntity<>(theProducto, HttpStatus.OK);
+
     }
 
     @PutMapping
-    public ResponseEntity<Producto> updateProducto(@RequestBody Producto producto) {
-        Producto theProducto = productoService.addProducto(producto);
+    public ResponseEntity<Producto> updateProducto(@RequestBody Producto producto, @RequestParam Optional<Long> proveedor, @RequestParam Optional<Long> establecimiento) {
+        Producto theProducto = productoService.addProducto(producto, proveedor, establecimiento);
         return new ResponseEntity<>(theProducto, HttpStatus.OK);
     }
 
