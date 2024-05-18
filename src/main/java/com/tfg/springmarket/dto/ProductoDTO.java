@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductoDTO {
-
-    private Long id;
-
     private String nombre;
-
-    private Integer stock;
-
-    private Float precio;
 
     private String descripcion;
 
+    private Float precio;
+
+    private Integer stock;
+
+    private Long proveedorId;
+
+    private Long establecimientoId;
 }
