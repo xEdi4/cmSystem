@@ -12,11 +12,15 @@ public class ProductoDTO {
 
     private String descripcion;
 
-    private Float precio;
+    private Float precio_venta;
+
+    private Float precio_coste;
 
     private Integer stock;
 
     private Long proveedorId;
 
     private Long establecimientoId;
+
+
 }

@@ -1,5 +1,7 @@
 package com.tfg.springmarket.services;
 
+import com.tfg.springmarket.dto.ProductoDTO;
+import com.tfg.springmarket. dto.ProductosDTO;
 import com.tfg.springmarket.model.entities.Establecimiento;
 import com.tfg.springmarket.model.entities.Producto;
 import com.tfg.springmarket.model.entities.Proveedor;
@@ -9,6 +11,7 @@ import com.tfg.springmarket.model.repositories.ProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,23 +46,53 @@ public class ProductoService {
     }
 
     public Producto addProducto(Producto producto, Optional<Long> proveedorId, Optional<Long> establecimientoId) {
-        if (proveedorId.isPresent()){
+        if (proveedorId.isPresent()) {
             Optional<Proveedor> proveedorOpt = proveedorRepository.findById(proveedorId.get());
+            if (!proveedorOpt.isPresent()) {
+                throw new RuntimeException("Proveedor no encontrado");
+            }
             producto.setProveedor(proveedorOpt.get());
-            return productoRepository.save(producto);
-        }else if(establecimientoId.isPresent()) {
+        } else if (establecimientoId.isPresent()) {
             Optional<Establecimiento> establecimientoOpt = establecimientoRepository.findById(establecimientoId.get());
+            if (!establecimientoOpt.isPresent()) {
+                throw new RuntimeException("Establecimiento no encontrado");
+            }
             producto.setEstablecimiento(establecimientoOpt.get());
-            return productoRepository.save(producto);
+        } else {
+            throw new RuntimeException("Debe proporcionar un ID de proveedor o establecimiento");
         }
-        else{
-            throw new RuntimeException("Proveedor no encontrado");
-        }
+        return productoRepository.save(producto);
+    }
 
+    public List<Producto> addMultipleProductos(ProductosDTO productosDTO) {
+        List<Producto> savedProductos = new ArrayList<>();
+        for (ProductoDTO productoDTO : productosDTO.getProductos()) {
+            Producto producto = new Producto();
+            producto.setNombre(productoDTO.getNombre());
+            producto.setDescripcion(productoDTO.getDescripcion());
+            producto.setPrecio(productoDTO.getPrecio());
+            producto.setStock(productoDTO.getStock());
+
+            Optional<Long> proveedorId = Optional.ofNullable(productoDTO.getProveedorId());
+            Optional<Long> establecimientoId = Optional.ofNullable(productoDTO.getEstablecimientoId());
+
+            if (proveedorId.isPresent()) {
+                Proveedor proveedor = proveedorRepository.findById(proveedorId.get())
+                        .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+                producto.setProveedor(proveedor);
+            }
+            if (establecimientoId.isPresent()) {
+                Establecimiento establecimiento = establecimientoRepository.findById(establecimientoId.get())
+                        .orElseThrow(() -> new RuntimeException("Establecimiento no encontrado"));
+                producto.setEstablecimiento(establecimiento);
+            }
+
+            savedProductos.add(productoRepository.save(producto));
+        }
+        return savedProductos;
     }
 
     public void deleteProducto(Long id) {
         productoRepository.deleteById(id);
     }
-
 }

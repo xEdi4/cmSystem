@@ -1,5 +1,6 @@
 package com.tfg.springmarket.controllers;
 
+import com.tfg.springmarket.dto.ProductosDTO;
 import com.tfg.springmarket.model.entities.Producto;
 import com.tfg.springmarket.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class ProductoController {
     public ResponseEntity<Producto> addProducto(@RequestBody Producto producto, @RequestParam Optional<Long> proveedor, @RequestParam Optional<Long> establecimiento) {
         Producto theProducto = productoService.addProducto(producto, proveedor, establecimiento);
         return new ResponseEntity<>(theProducto, HttpStatus.OK);
-
     }
 
     @PutMapping
@@ -59,4 +59,9 @@ public class ProductoController {
         productoService.deleteProducto(id);
     }
 
+    @PostMapping("/productos")
+    public ResponseEntity<List<Producto>> addMultipleProductos(@RequestBody ProductosDTO productosDTO) {
+        List<Producto> savedProductos = productoService.addMultipleProductos(productosDTO);
+        return new ResponseEntity<>(savedProductos, HttpStatus.OK);
+    }
 }
