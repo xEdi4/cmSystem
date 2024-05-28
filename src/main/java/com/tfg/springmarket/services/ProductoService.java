@@ -70,7 +70,7 @@ public class ProductoService {
             Producto producto = new Producto();
             producto.setNombre(productoDTO.getNombre());
             producto.setDescripcion(productoDTO.getDescripcion());
-            producto.setPrecio(productoDTO.getPrecio());
+            producto.setPrecio_coste(productoDTO.getPrecio_coste());
             producto.setStock(productoDTO.getStock());
 
             Optional<Long> proveedorId = Optional.ofNullable(productoDTO.getProveedorId());

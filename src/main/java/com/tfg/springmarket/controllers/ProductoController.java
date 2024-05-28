@@ -59,7 +59,7 @@ public class ProductoController {
         productoService.deleteProducto(id);
     }
 
-    @PostMapping("/productos")
+    @PostMapping("/productosjson")
     public ResponseEntity<List<Producto>> addMultipleProductos(@RequestBody ProductosDTO productosDTO) {
         List<Producto> savedProductos = productoService.addMultipleProductos(productosDTO);
         return new ResponseEntity<>(savedProductos, HttpStatus.OK);
