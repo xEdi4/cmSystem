@@ -31,7 +31,4 @@ public class Establecimiento implements Serializable {
     @Column(unique = true)
     private String direccion;
 
-    @OneToMany(mappedBy = "establecimiento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Producto> productos;
-
 }

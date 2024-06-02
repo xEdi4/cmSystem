@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,12 +23,18 @@ public class Producto implements Serializable {
 
     private String descripcion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "establecimiento_id", nullable = false)
-    private Establecimiento establecimiento;
+    private Float precio_venta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "proveedor_id", nullable = false)
+    private Float precio_coste;
+
+    private Integer stock;
+
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
+
+    @ManyToOne
+    @JoinColumn(name = "establecimiento_id")
+    private Establecimiento establecimiento;
     
 }
