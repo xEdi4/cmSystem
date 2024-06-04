@@ -2,16 +2,11 @@ package com.tfg.springmarket.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Entity
-@DynamicUpdate
-@DynamicInsert
 @Table(name = "establecimientos")
 public class Establecimiento implements Serializable {
 
@@ -27,8 +22,5 @@ public class Establecimiento implements Serializable {
 
     @Column(unique = true)
     private String telefono;
-
-    @OneToMany(mappedBy = "establecimiento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Producto> productos;
 
 }
