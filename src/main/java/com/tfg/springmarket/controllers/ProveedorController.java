@@ -3,50 +3,24 @@ package com.tfg.springmarket.controllers;
 import com.tfg.springmarket.model.entities.Proveedor;
 import com.tfg.springmarket.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/proveedores")
+@RequestMapping("/proveedores")
 public class ProveedorController {
 
-    private final ProveedorService proveedorService;
-
     @Autowired
-    public ProveedorController(ProveedorService proveedorService) {
-        this.proveedorService = proveedorService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Proveedor>> getProveedores() {
-        List<Proveedor> allProveedores = proveedorService.getProveedores();
-        return new ResponseEntity<>(allProveedores, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> getProveedor(@PathVariable("id") Long id) {
-        Proveedor theProveedor = proveedorService.getProveedor(id);
-        return new ResponseEntity<>(theProveedor, HttpStatus.OK);
-    }
+    private ProveedorService proveedorService;
 
     @PostMapping
-    public ResponseEntity<Proveedor> addProveedor(@RequestBody Proveedor proveedor) {
-        Proveedor theProveedor = proveedorService.addProveedor(proveedor);
-        return new ResponseEntity<>(theProveedor, HttpStatus.OK);
+    public ResponseEntity<Proveedor> agregarProveedor(@RequestBody Proveedor proveedor) {
+        Proveedor proveedorGuardado = proveedorService.agregarProveedor(proveedor);
+        return ResponseEntity.ok(proveedorGuardado);
     }
 
-    @PutMapping
-    public ResponseEntity<Proveedor> updateProveedor(@RequestBody Proveedor proveedor) {
-        Proveedor theProveedor = proveedorService.addProveedor(proveedor);
-        return new ResponseEntity<>(theProveedor, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteProveedor(@PathVariable("id") Long id) {
-        proveedorService.deleteProveedor(id);
-    }
-
+    // Otros endpoints para obtener, actualizar o eliminar proveedores si es necesario
 }
