@@ -1,23 +1,25 @@
 package com.tfg.springmarket.controllers;
 
+import com.tfg.springmarket.dto.CompraDTO;
 import com.tfg.springmarket.services.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/compras")
+@RequestMapping("/establecimientos/{establecimientoId}/compras")
 public class CompraController {
 
     @Autowired
     private CompraService compraService;
 
     @PostMapping
-    public ResponseEntity<String> comprarProducto(@RequestParam Long establecimientoId, @RequestParam Long productoProveedorId, @RequestParam Integer cantidad) {
-        String mensaje = compraService.comprarProducto(establecimientoId, productoProveedorId, cantidad);
+    public ResponseEntity<String> comprarProductos(
+            @PathVariable Long establecimientoId,
+            @RequestBody List<CompraDTO> comprasDTO) {
+        String mensaje = compraService.comprarProductos(establecimientoId, comprasDTO);
         return ResponseEntity.ok(mensaje);
     }
 }

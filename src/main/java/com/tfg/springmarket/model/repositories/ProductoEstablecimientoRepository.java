@@ -5,6 +5,8 @@ import com.tfg.springmarket.model.entities.ProductoEstablecimiento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -12,4 +14,6 @@ public interface ProductoEstablecimientoRepository extends JpaRepository<Product
     Optional<ProductoEstablecimiento> findByEstablecimientoIdAndNombre(Long establecimientoId, String nombre);
 
     ProductoEstablecimiento findByEstablecimientoAndNombre(Establecimiento establecimiento, String nombre);
+
+
 }

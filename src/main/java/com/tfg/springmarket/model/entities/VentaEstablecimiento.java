@@ -27,6 +27,9 @@ public class VentaEstablecimiento implements Serializable {
     @Column(name = "precio_coste")
     private Double precioCoste;
 
+    @Column(name = "fecha_venta")
+    private String fechaVenta;
+
 
     // Getters y setters
 
