@@ -1,8 +1,6 @@
 package com.tfg.springmarket.controllers;
 
-import com.tfg.springmarket.dto.FechaRequestDTO;
 import com.tfg.springmarket.model.entities.Establecimiento;
-import com.tfg.springmarket.model.entities.VentaEstablecimiento;
 import com.tfg.springmarket.services.EstablecimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,24 +15,28 @@ public class EstablecimientoController {
     @Autowired
     private EstablecimientoService establecimientoService;
 
-    @GetMapping("/{establecimientoId}/ventas")
-    public ResponseEntity<List<VentaEstablecimiento>> obtenerVentasEntreFechasDeEstablecimiento(
-            @PathVariable Long establecimientoId,
-            @RequestBody FechaRequestDTO fechaRequestDTO) {
-
-        List<VentaEstablecimiento> ventas = establecimientoService.obtenerVentasEntreFechasDeEstablecimiento(establecimientoId, fechaRequestDTO);
-
-        if (ventas == null) {
-            // Manejar el caso donde el establecimiento no existe
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(ventas);
-    }
-
     @PostMapping
     public ResponseEntity<Establecimiento> agregarEstablecimiento(@RequestBody Establecimiento establecimiento) {
         Establecimiento establecimientoGuardado = establecimientoService.agregarEstablecimiento(establecimiento);
         return ResponseEntity.ok(establecimientoGuardado);
     }
+
+    @GetMapping
+    public ResponseEntity<List<Establecimiento>> obtenerTodosLosEstablecimientos() {
+        List<Establecimiento> establecimientos = establecimientoService.obtenerTodosLosEstablecimientos();
+        return ResponseEntity.ok(establecimientos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Establecimiento> obtenerEstablecimientoPorId(@PathVariable Long id) {
+        Establecimiento establecimiento = establecimientoService.obtenerEstablecimientoPorId(id);
+        return ResponseEntity.ok(establecimiento);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Establecimiento> actualizarEstablecimiento(@PathVariable Long id, @RequestBody Establecimiento establecimiento) {
+        Establecimiento establecimientoActualizado = establecimientoService.actualizarEstablecimiento(id, establecimiento);
+        return ResponseEntity.ok(establecimientoActualizado);
+    }
+
 }

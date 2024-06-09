@@ -4,10 +4,9 @@ import com.tfg.springmarket.model.entities.Proveedor;
 import com.tfg.springmarket.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/proveedores")
@@ -22,5 +21,22 @@ public class ProveedorController {
         return ResponseEntity.ok(proveedorGuardado);
     }
 
-    // Otros endpoints para obtener, actualizar o eliminar proveedores si es necesario
+    @GetMapping
+    public ResponseEntity<List<Proveedor>> obtenerTodosLosProveedores() {
+        List<Proveedor> proveedores = proveedorService.obtenerTodosLosProveedores();
+        return ResponseEntity.ok(proveedores);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Proveedor> obtenerProveedorPorId(@PathVariable Long id) {
+        Proveedor proveedor = proveedorService.obtenerProveedorPorId(id);
+        return ResponseEntity.ok(proveedor);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
+        Proveedor proveedorActualizado = proveedorService.actualizarProveedor(id, proveedor);
+        return ResponseEntity.ok(proveedorActualizado);
+    }
+
 }
