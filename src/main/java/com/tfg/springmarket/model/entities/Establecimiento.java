@@ -17,8 +17,8 @@ public class Establecimiento implements Serializable {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "teléfono")
-    private String teléfono;
+    @Column(name = "telefono")
+    private String telefono;
 
     @Column(name = "email")
     private String email;

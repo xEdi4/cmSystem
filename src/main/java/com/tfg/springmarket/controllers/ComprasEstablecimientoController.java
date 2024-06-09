@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/compras/{establecimientoId}")
-public class ComprasController {
+public class ComprasEstablecimientoController {
 
     @Autowired
     private ComprasService comprasService;

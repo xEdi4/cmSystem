@@ -1,7 +1,5 @@
 package com.tfg.springmarket.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tfg.springmarket.model.entities.ProductosProveedor;
 import com.tfg.springmarket.services.ProductosProveedorService;
 import org.slf4j.Logger;
@@ -15,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/proveedor/productos")
+@RequestMapping("/proveedores/productos")
 public class ProductosProveedorController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductosProveedorController.class);
@@ -26,7 +24,7 @@ public class ProductosProveedorController {
     @PostMapping("/{proveedorId}")
     public ResponseEntity<List<ProductosProveedor>> agregarProductosProveedor(@PathVariable Long proveedorId, @RequestParam("file") MultipartFile file) {
         try {
-            List<ProductosProveedor> productosDelArchivo = parsearArchivoJSON(file);
+            List<ProductosProveedor> productosDelArchivo = productosProveedorService.parsearArchivoJSON(file);
             return ResponseEntity.ok(productosProveedorService.agregarProductosProveedor(proveedorId, productosDelArchivo));
         } catch (IOException e) {
             logger.error("Error al procesar el archivo JSON", e);
@@ -56,12 +54,6 @@ public class ProductosProveedorController {
     public ResponseEntity<?> eliminarProductoProveedor(@PathVariable Long proveedorId, @PathVariable Long id) {
         productosProveedorService.eliminarProductoProveedor(proveedorId, id);
         return ResponseEntity.ok().build();
-    }
-
-    private List<ProductosProveedor> parsearArchivoJSON(MultipartFile file) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(file.getInputStream(), new TypeReference<List<ProductosProveedor>>() {
-        });
     }
 
 }
