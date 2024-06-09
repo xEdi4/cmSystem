@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ventas")
 public class VentaController {
@@ -17,8 +19,8 @@ public class VentaController {
     private VentaService ventaService;
 
     @PostMapping
-    public ResponseEntity<String> procesarVenta(@RequestBody VentaDTO ventaDTO) {
-        String mensaje = ventaService.procesarVenta(ventaDTO.getProductoEstablecimientoId(), ventaDTO.getCantidad());
+    public ResponseEntity<String> procesarVentas(@RequestBody List<VentaDTO> ventasDTO) {
+        String mensaje = ventaService.procesarVentas(ventasDTO);
         return ResponseEntity.ok(mensaje);
     }
 }

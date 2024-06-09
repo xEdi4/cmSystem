@@ -18,10 +18,6 @@ public class VentaProveedor implements Serializable {
     @JoinColumn(name = "producto_proveedor_id")
     private ProductoProveedor productoProveedor;
 
-    @ManyToOne
-    @JoinColumn(name = "establecimiento_id")
-    private Establecimiento establecimiento;
-
     @Column(name = "cantidad")
     private Integer cantidad;
 
