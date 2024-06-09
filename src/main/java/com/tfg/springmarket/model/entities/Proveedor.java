@@ -17,10 +17,10 @@ public class Proveedor implements Serializable {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "telefono")
-    private String telefono;
+    @Column(name = "teléfono")
+    private String teléfono;
 
     @Column(name = "email")
     private String email;
-    
+
 }

@@ -1,7 +1,7 @@
 package com.tfg.springmarket.controllers;
 
 import com.tfg.springmarket.dto.VentaDTO;
-import com.tfg.springmarket.services.VentaEstablecimientoService;
+import com.tfg.springmarket.services.VentasEstablecimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +16,11 @@ import java.util.List;
 public class VentasEstablecimientoController {
 
     @Autowired
-    private VentaEstablecimientoService ventaEstablecimientoService;
+    private VentasEstablecimientoService ventasEstablecimientoService;
 
     @PostMapping
     public ResponseEntity<String> procesarVentas(@RequestBody List<VentaDTO> ventasDTO) {
-        String mensaje = ventaEstablecimientoService.procesarVentas(ventasDTO);
+        String mensaje = ventasEstablecimientoService.procesarVentas(ventasDTO);
         return ResponseEntity.ok(mensaje);
     }
 }

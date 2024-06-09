@@ -14,13 +14,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-public class VentaEstablecimientoService {
-
-    @Autowired
-    private ProductosEstablecimientoRepository productosEstablecimientoRepository;
+public class VentasEstablecimientoService {
 
     @Autowired
     private VentasEstablecimientoRepository ventaRepository;
+
+    @Autowired
+    private ProductosEstablecimientoRepository productosEstablecimientoRepository;
 
     @Transactional
     public String procesarVentas(List<VentaDTO> ventasDTO) {
@@ -51,8 +51,6 @@ public class VentaEstablecimientoService {
             // Actualizar el stock en el establecimiento
             productosEstablecimiento.setStock(productosEstablecimiento.getStock() - ventaDTO.getCantidad());
             productosEstablecimientoRepository.save(productosEstablecimiento);
-
-            resultado.append("Venta realizada con éxito para el producto: ").append(ventaDTO.getProductoEstablecimientoId()).append("\n");
         }
 
         return resultado.toString();

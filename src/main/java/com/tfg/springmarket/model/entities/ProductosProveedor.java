@@ -1,5 +1,6 @@
 package com.tfg.springmarket.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class ProductosProveedor implements Serializable {
     @Column(name = "stock")
     private Integer stock;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
