@@ -8,15 +8,11 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "ventas_proveedor")
-public class VentaProveedor implements Serializable {
+public class VentasProveedor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "producto_proveedor_id")
-    private ProductoProveedor productoProveedor;
 
     @Column(name = "cantidad")
     private Integer cantidad;
@@ -27,7 +23,8 @@ public class VentaProveedor implements Serializable {
     @Column(name = "fecha_venta")
     private String fechaVenta;
 
-    // Getters y setters
+    @ManyToOne
+    @JoinColumn(name = "productos_proveedor_id", referencedColumnName = "id")
+    private ProductosProveedor productosProveedor;
 
-    // Constructor(s), hashCode, equals, etc. según sea necesario
 }
