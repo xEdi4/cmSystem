@@ -79,7 +79,9 @@ public class ComprasService {
                 productosEstablecimiento = new ProductosEstablecimiento();
                 productosEstablecimiento.setNombre(productosProveedor.getNombre());
                 productosEstablecimiento.setPrecioCoste(productosProveedor.getPrecioVenta());
-                Double precioVenta = Double.valueOf(productosProveedor.getPrecioVenta() * 1.3);
+                Double precioVenta = BigDecimal.valueOf(productosProveedor.getPrecioVenta() * 1.3)
+                        .setScale(2, RoundingMode.HALF_UP)
+                        .doubleValue();
                 productosEstablecimiento.setPrecioVenta(precioVenta);
                 productosEstablecimiento.setStock(cantidad);
                 productosEstablecimiento.setEstablecimiento(establecimiento);
