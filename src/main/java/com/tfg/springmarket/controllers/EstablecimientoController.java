@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@CrossOrigin(origins = "*") // Esto permite solicitudes CORS desde cualquier origen
 @RestController
 @RequestMapping("/establecimientos")
 public class EstablecimientoController {

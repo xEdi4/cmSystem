@@ -28,7 +28,7 @@ public class VentasEstablecimientoService {
         StringBuilder resultado = new StringBuilder();
 
         for (VentaDTO ventaDTO : ventasDTO) {
-            ProductosEstablecimiento productosEstablecimiento = productosEstablecimientoRepository.findById(ventaDTO.getProductoEstablecimientoId()).orElse(null);
+            ProductosEstablecimiento productosEstablecimiento = productosEstablecimientoRepository.findByIdAndActivoTrue(ventaDTO.getProductoEstablecimientoId()).orElse(null);
 
             if (productosEstablecimiento == null) {
                 resultado.append("Producto no encontrado en el establecimiento: ").append(ventaDTO.getProductoEstablecimientoId()).append("\n");

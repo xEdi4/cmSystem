@@ -9,7 +9,11 @@ import java.util.Optional;
 
 @Repository
 public interface ProductosProveedorRepository extends JpaRepository<ProductosProveedor, Long> {
-    List<ProductosProveedor> findByProveedorId(Long proveedorId);
+    List<ProductosProveedor> findByProveedorIdAndActivoTrue(Long proveedorId);
 
-    Optional<ProductosProveedor> findByProveedorIdAndId(Long proveedorId, Long id);
+    Optional<ProductosProveedor> findByProveedorIdAndIdAndActivoTrue(Long proveedorId, Long id);
+
+    List<ProductosProveedor> findAllByActivoTrue();
+
+    Optional<ProductosProveedor> findByIdAndActivoTrue(Long id); // Nuevo método
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*") // Esto permite solicitudes CORS desde cualquier origen
 @RestController
 @RequestMapping("/establecimientos/productos/{establecimientoId}")
 public class ProductosEstablecimientoController {
