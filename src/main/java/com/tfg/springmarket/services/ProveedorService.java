@@ -1,10 +1,13 @@
 package com.tfg.springmarket.services;
 
 import com.tfg.springmarket.model.entities.Proveedor;
+import com.tfg.springmarket.model.entities.VentasProveedor;
 import com.tfg.springmarket.model.repositories.ProveedorRepository;
+import com.tfg.springmarket.model.repositories.VentasProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +17,15 @@ public class ProveedorService {
     @Autowired
     private ProveedorRepository proveedorRepository;
 
+    @Autowired
+    private VentasProveedorRepository ventaProveedorRepository;
+
     public Proveedor agregarProveedor(Proveedor proveedor) {
         return proveedorRepository.save(proveedor);
+    }
+
+    public List<VentasProveedor> obtenerVentasPorProveedor(Long proveedorId, LocalDate fechaInicio, LocalDate fechaFin) {
+        return ventaProveedorRepository.findAllByProveedorIdAndFechaVentaBetween(proveedorId, fechaInicio, fechaFin);
     }
 
     public List<Proveedor> obtenerTodosLosProveedores() {

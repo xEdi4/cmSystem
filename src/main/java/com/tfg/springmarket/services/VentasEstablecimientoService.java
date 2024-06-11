@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -45,7 +46,7 @@ public class VentasEstablecimientoService {
             ventasEstablecimiento.setCantidad(ventaDTO.getCantidad());
             ventasEstablecimiento.setPrecioVenta(productosEstablecimiento.getPrecioVenta());
             ventasEstablecimiento.setPrecioCoste(productosEstablecimiento.getPrecioCoste());
-            ventasEstablecimiento.setFechaVenta(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ventasEstablecimiento.setFechaVenta(LocalDate.now());
             ventaRepository.save(ventasEstablecimiento);
 
             // Actualizar el stock en el establecimiento

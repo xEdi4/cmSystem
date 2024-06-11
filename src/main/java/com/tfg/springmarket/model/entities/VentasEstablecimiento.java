@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -24,7 +25,11 @@ public class VentasEstablecimiento implements Serializable {
     private Double precioVenta;
 
     @Column(name = "fecha_venta")
-    private String fechaVenta;
+    private LocalDate fechaVenta;
+
+    @ManyToOne
+    @JoinColumn(name = "establecimiento_id", nullable = false)
+    private Establecimiento establecimiento;
 
     @ManyToOne
     @JoinColumn(name = "productos_establecimiento_id", referencedColumnName = "id")

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -67,7 +68,7 @@ public class ComprasService {
             ventasProveedor.setProductosProveedor(productosProveedor);
             ventasProveedor.setCantidad(cantidad);
             ventasProveedor.setPrecioVenta(productosProveedor.getPrecioVenta());
-            ventasProveedor.setFechaVenta(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ventasProveedor.setFechaVenta(LocalDate.now());
             ventasProveedorRepository.save(ventasProveedor);
 
             // Actualizar o crear el producto en el establecimiento
