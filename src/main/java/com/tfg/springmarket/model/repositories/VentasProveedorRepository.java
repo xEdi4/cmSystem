@@ -12,7 +12,8 @@ import java.util.List;
 public interface VentasProveedorRepository extends JpaRepository<VentasProveedor, Long> {
     List<VentasProveedor> findAllByEstablecimientoIdAndFechaVentaBetween(Long establecimientoId, LocalDate fechaInicio, LocalDate fechaFin);
     List<VentasProveedor> findAllByProveedorIdAndFechaVentaBetween(Long proveedorId, LocalDate fechaInicio, LocalDate fechaFin);
-
+    List<VentasProveedor> findByProveedorIdAndFechaVentaBetween(Long proveedorId, LocalDate fechaInicio, LocalDate fechaFin);
+    List<VentasProveedor> findByEstablecimientoIdAndFechaVentaBetween(Long establecimientoId, LocalDate fechaInicio, LocalDate fechaFin);
     @Query("SELECT v.productosProveedor.id, SUM(v.cantidad) as totalCantidad " +
             "FROM VentasProveedor v " +
             "WHERE v.fechaVenta BETWEEN :fechaInicio AND :fechaFin " +

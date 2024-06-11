@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface VentasEstablecimientoRepository extends JpaRepository<VentasEstablecimiento, Long> {
-
+    List<VentasEstablecimiento> findByEstablecimientoIdAndFechaVentaBetween(Long establecimientoId, LocalDate fechaInicio, LocalDate fechaFin);
     List<VentasEstablecimiento> findAllByEstablecimientoIdAndFechaVentaBetween(Long establecimientoId, LocalDate fechaInicio, LocalDate fechaFin);
 
     @Query("SELECT v.productosEstablecimiento.id, SUM(v.cantidad) as totalCantidad " +
