@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -46,7 +48,7 @@ public class ComprasService {
             Long productoProveedorId = compra.getProductoProveedorId();
             Integer cantidad = compra.getCantidad();
 
-            ProductosProveedor productosProveedor = productosProveedorRepository.findById(productoProveedorId).orElse(null);
+            ProductosProveedor productosProveedor = productosProveedorRepository.findByIdAndActivoTrue(productoProveedorId).orElse(null);
 
             if (productosProveedor == null) {
                 resultado.append("Producto del proveedor no encontrado: ").append(productoProveedorId).append("\n");
@@ -76,13 +78,17 @@ public class ComprasService {
                 productosEstablecimiento = new ProductosEstablecimiento();
                 productosEstablecimiento.setNombre(productosProveedor.getNombre());
                 productosEstablecimiento.setPrecioCoste(productosProveedor.getPrecioVenta());
-                productosEstablecimiento.setPrecioVenta(productosProveedor.getPrecioVenta() * 1.3);
+                BigDecimal precioVenta = BigDecimal.valueOf(productosProveedor.getPrecioVenta() * 1.3)
+                        .setScale(2, RoundingMode.HALF_UP);
+                productosEstablecimiento.setPrecioVenta(precioVenta);
                 productosEstablecimiento.setStock(cantidad);
                 productosEstablecimiento.setEstablecimiento(establecimiento);
+                productosEstablecimiento.setProveedor(productosProveedor.getProveedor());
+                productosEstablecimiento.setActivo(true); // Asegurarse de que el producto en el establecimiento esté activo
             } else {
                 productosEstablecimiento.setStock(productosEstablecimiento.getStock() + cantidad);
             }
-            productosEstablecimientoRepository.save(productosEstablecimiento); // Asegurarse de guardar el productosEstablecimiento
+            productosEstablecimientoRepository.save(productosEstablecimiento);
         }
 
         return resultado.toString();

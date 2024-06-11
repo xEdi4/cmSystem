@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -22,7 +23,7 @@ public class ProductosEstablecimiento implements Serializable {
     private Double precioCoste;
 
     @Column(name = "precio_venta")
-    private Double precioVenta;
+    private BigDecimal precioVenta;
 
     @Column(name = "stock")
     private Integer stock;
@@ -32,4 +33,11 @@ public class ProductosEstablecimiento implements Serializable {
     @JoinColumn(name = "establecimiento_id", referencedColumnName = "id")
     private Establecimiento establecimiento;
 
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id", referencedColumnName = "id")
+    private Proveedor proveedor;
+
+    @JsonIgnore
+    @Column(name = "activo")
+    private Boolean activo = true; // Nuevo campo para borrado lógico
 }
