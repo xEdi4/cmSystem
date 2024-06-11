@@ -23,7 +23,7 @@ public class VentasEstablecimiento implements Serializable {
     private Double precioCoste;
 
     @Column(name = "precio_venta")
-    private BigDecimal precioVenta;
+    private Double precioVenta;
 
     @Column(name = "fecha_venta")
     private LocalDate fechaVenta;
