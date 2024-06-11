@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -21,7 +22,7 @@ public class VentasEstablecimiento implements Serializable {
     private Double precioCoste;
 
     @Column(name = "precio_venta")
-    private Double precioVenta;
+    private BigDecimal precioVenta;
 
     @Column(name = "fecha_venta")
     private String fechaVenta;

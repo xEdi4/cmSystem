@@ -43,15 +43,15 @@ public class ProductosProveedorService {
     }
 
     public List<ProductosProveedor> obtenerTodosLosProductosProveedor(Long proveedorId) {
-        return productosProveedorRepository.findByProveedorId(proveedorId);
+        return productosProveedorRepository.findByProveedorIdAndActivoTrue(proveedorId);
     }
 
     public List<ProductosProveedor> obtenerTodosLosProductos() {
-        return productosProveedorRepository.findAll();
+        return productosProveedorRepository.findAllByActivoTrue();
     }
 
     public ProductosProveedor actualizarProductoProveedor(Long proveedorId, Long id, ProductosProveedor productoProveedor) {
-        ProductosProveedor existente = productosProveedorRepository.findByProveedorIdAndId(proveedorId, id)
+        ProductosProveedor existente = productosProveedorRepository.findByProveedorIdAndIdAndActivoTrue(proveedorId, id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id + " para el proveedor con id: " + proveedorId));
 
         existente.setNombre(productoProveedor.getNombre());
@@ -62,10 +62,11 @@ public class ProductosProveedorService {
     }
 
     public void eliminarProductoProveedor(Long proveedorId, Long id) {
-        ProductosProveedor existente = productosProveedorRepository.findByProveedorIdAndId(proveedorId, id)
+        ProductosProveedor existente = productosProveedorRepository.findByProveedorIdAndIdAndActivoTrue(proveedorId, id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id + " para el proveedor con id: " + proveedorId));
 
-        productosProveedorRepository.delete(existente);
+        existente.setActivo(false); // Realizar borrado lógico
+        productosProveedorRepository.save(existente);
     }
 
 }

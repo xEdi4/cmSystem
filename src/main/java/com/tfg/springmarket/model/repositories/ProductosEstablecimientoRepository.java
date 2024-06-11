@@ -6,12 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductosEstablecimientoRepository extends JpaRepository<ProductosEstablecimiento, Long> {
-    List<ProductosEstablecimiento> findByEstablecimientoId(Long establecimientoId);
+    List<ProductosEstablecimiento> findByEstablecimientoIdAndActivoTrue(Long establecimientoId);
 
-    ProductosEstablecimiento findByEstablecimientoIdAndId(Long establecimientoId, Long id);
+    Optional<ProductosEstablecimiento> findByIdAndEstablecimientoIdAndActivoTrue(Long id, Long establecimientoId);
 
     ProductosEstablecimiento findByEstablecimientoAndNombre(Establecimiento establecimiento, String nombre);
+
+    Optional<ProductosEstablecimiento> findByIdAndActivoTrue(Long id);
 }

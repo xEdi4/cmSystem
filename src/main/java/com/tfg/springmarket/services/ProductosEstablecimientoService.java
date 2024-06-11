@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductosEstablecimientoService {
@@ -14,25 +15,30 @@ public class ProductosEstablecimientoService {
     private ProductosEstablecimientoRepository productosEstablecimientoRepository;
 
     public List<ProductosEstablecimiento> obtenerTodosLosProductosEstablecimiento(Long establecimientoId) {
-        return productosEstablecimientoRepository.findByEstablecimientoId(establecimientoId);
+        return productosEstablecimientoRepository.findByEstablecimientoIdAndActivoTrue(establecimientoId);
     }
 
     public ProductosEstablecimiento actualizarProductoEstablecimiento(Long establecimientoId, Long id, ProductosEstablecimiento productoEstablecimiento) {
-        ProductosEstablecimiento existente = productosEstablecimientoRepository.findByEstablecimientoIdAndId(establecimientoId, id);
-        if (existente != null) {
-            existente.setNombre(productoEstablecimiento.getNombre());
-            existente.setPrecioCoste(productoEstablecimiento.getPrecioCoste());
-            existente.setPrecioVenta(productoEstablecimiento.getPrecioVenta());
-            existente.setStock(productoEstablecimiento.getStock());
-            return productosEstablecimientoRepository.save(existente);
+        Optional<ProductosEstablecimiento> productoExistente = productosEstablecimientoRepository.findByIdAndEstablecimientoIdAndActivoTrue(id, establecimientoId);
+        if (productoExistente.isPresent()) {
+            ProductosEstablecimiento productoActualizado = productoExistente.get();
+            productoActualizado.setNombre(productoEstablecimiento.getNombre());
+            productoActualizado.setPrecioCoste(productoEstablecimiento.getPrecioCoste());
+            productoActualizado.setPrecioVenta(productoEstablecimiento.getPrecioVenta());
+            productoActualizado.setStock(productoEstablecimiento.getStock());
+            productoActualizado.setProveedor(productoEstablecimiento.getProveedor());
+            return productosEstablecimientoRepository.save(productoActualizado);
+        } else {
+            return null; // Manejar el caso de no encontrado si es necesario
         }
-        return null;
     }
 
     public void eliminarProductoEstablecimiento(Long establecimientoId, Long id) {
-        ProductosEstablecimiento existente = productosEstablecimientoRepository.findByEstablecimientoIdAndId(establecimientoId, id);
-        if (existente != null) {
-            productosEstablecimientoRepository.delete(existente);
+        Optional<ProductosEstablecimiento> productoExistente = productosEstablecimientoRepository.findByIdAndEstablecimientoIdAndActivoTrue(id, establecimientoId);
+        if (productoExistente.isPresent()) {
+            ProductosEstablecimiento producto = productoExistente.get();
+            producto.setActivo(false); // Realizar borrado lógico
+            productosEstablecimientoRepository.save(producto);
         }
     }
 }

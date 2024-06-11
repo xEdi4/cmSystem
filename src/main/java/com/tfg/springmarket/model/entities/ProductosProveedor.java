@@ -26,7 +26,10 @@ public class ProductosProveedor implements Serializable {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "proveedor_id")
+    @JoinColumn(name = "proveedor_id", referencedColumnName = "id")
     private Proveedor proveedor;
 
+    @JsonIgnore
+    @Column(name = "activo")
+    private Boolean activo = true; // Nuevo campo para borrado lógico
 }
