@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*") // Esto permite solicitudes CORS desde cualquier origen
 @RestController
-@RequestMapping("/establecimientos/productos/{establecimientoId}")
+@RequestMapping("/establecimientos/{establecimientoId}/productos")
 public class ProductosEstablecimientoController {
 
     @Autowired
