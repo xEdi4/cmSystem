@@ -18,6 +18,8 @@ public class ProductosEstablecimientoService {
         return productosEstablecimientoRepository.findByEstablecimientoIdAndActivoTrue(establecimientoId);
     }
 
+
+
     public ProductosEstablecimiento actualizarProductoEstablecimiento(Long establecimientoId, Long id, ProductosEstablecimiento productoEstablecimiento) {
         Optional<ProductosEstablecimiento> productoExistente = productosEstablecimientoRepository.findByIdAndEstablecimientoIdAndActivoTrue(id, establecimientoId);
         if (productoExistente.isPresent()) {

@@ -28,20 +28,20 @@ public class EstablecimientoController {
     @Autowired
     private MetricsService metricsService;
 
-    @GetMapping("/top3productos/establecimiento")
-    public List<Object[]> getTop3ProductosEstablecimiento(@RequestParam Long establecimientoId, @RequestParam int ano, @RequestParam int mes) {
+    @GetMapping("/{id}/top3productos")
+    public List<Object[]> getTop3ProductosEstablecimiento(@RequestParam Long establecimientoId, @RequestBody int ano, @RequestBody int mes) {
         return metricsService.getTop3ProductosEstablecimiento(establecimientoId, ano, mes);
     }
 
-    @GetMapping("/ingresos-gastos-beneficios/establecimiento")
-    public Object[] getIngresosGastosBeneficiosEstablecimiento(@RequestParam int ano, @RequestParam int mes) {
+    @GetMapping("/{id}/ingresos-gastos-beneficios")
+    public Object[] getIngresosGastosBeneficiosEstablecimiento(@RequestBody int ano, @RequestBody int mes) {
         return metricsService.getIngresosGastosBeneficiosEstablecimiento(ano, mes);
     }
 
     @GetMapping("/{id}/reporte")
     public ResponseEntity<byte[]> generarReporte(@PathVariable Long id,
-                                                 @RequestParam String fechaInicio,
-                                                 @RequestParam String fechaFin) {
+                                                 @RequestBody String fechaInicio,
+                                                 @RequestBody String fechaFin) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
         LocalDate fin = LocalDate.parse(fechaFin, formatter);

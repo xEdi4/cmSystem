@@ -25,8 +25,8 @@ public class ProveedorController {
 
     @GetMapping("/{id}/reporte")
     public ResponseEntity<byte[]> generarReporte(@PathVariable Long id,
-                                                 @RequestParam String fechaInicio,
-                                                 @RequestParam String fechaFin) {
+                                                 @RequestBody String fechaInicio,
+                                                 @RequestBody String fechaFin) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
         LocalDate fin = LocalDate.parse(fechaFin, formatter);

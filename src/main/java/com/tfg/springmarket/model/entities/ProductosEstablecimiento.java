@@ -40,4 +40,6 @@ public class ProductosEstablecimiento implements Serializable {
     @JsonIgnore
     @Column(name = "activo")
     private Boolean activo = true; // Nuevo campo para borrado lógico
+
+
 }

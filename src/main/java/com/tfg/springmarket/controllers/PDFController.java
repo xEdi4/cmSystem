@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,11 +28,11 @@ public class PDFController {
     @Autowired
     private VentasProveedorRepository ventasProveedorRepository;
 
-    @GetMapping("/reporte/establecimiento")
+    @GetMapping("/establecimiento/{id}/reporte")
     public ResponseEntity<byte[]> generarReporteEstablecimiento(
             @RequestParam Long establecimientoId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+            @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
 
         List<VentasEstablecimiento> ventas = ventasEstablecimientoRepository.findByEstablecimientoIdAndFechaVentaBetween(establecimientoId, fechaInicio, fechaFin);
         List<VentasProveedor> compras = ventasProveedorRepository.findByEstablecimientoIdAndFechaVentaBetween(establecimientoId, fechaInicio, fechaFin);
@@ -44,11 +45,11 @@ public class PDFController {
                 .body(baos.toByteArray());
     }
 
-    @GetMapping("/reporte/proveedor")
+    @GetMapping("/proveedor/{id}/reporte")
     public ResponseEntity<byte[]> generarReporteProveedor(
             @RequestParam Long proveedorId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+            @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
 
         List<VentasProveedor> ventas = ventasProveedorRepository.findByProveedorIdAndFechaVentaBetween(proveedorId, fechaInicio, fechaFin);
 
