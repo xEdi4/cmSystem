@@ -1,8 +1,8 @@
-package com.tfg.springmarket.controllers;
+package com.tfg.springmarket.security.controllers;
 
-import com.tfg.springmarket.model.entities.AuthenticationResponse;
+import com.tfg.springmarket.security.response.AuthenticationResponse;
 import com.tfg.springmarket.model.entities.Usuario;
-import com.tfg.springmarket.security.AuthenticationService;
+import com.tfg.springmarket.security.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,5 +28,5 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> login(@RequestBody Usuario request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
-    
+
 }

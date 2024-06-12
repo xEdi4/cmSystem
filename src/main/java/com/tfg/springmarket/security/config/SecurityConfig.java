@@ -1,7 +1,9 @@
-package com.tfg.springmarket.config;
+package com.tfg.springmarket.security.config;
 
-import com.tfg.springmarket.filter.JwtAuthenticationFilter;
-import com.tfg.springmarket.security.UserDetailsServiceImpl;
+import com.tfg.springmarket.security.filter.JwtAuthenticationFilter;
+import com.tfg.springmarket.security.services.UserDetailsServiceImpl;
+import com.tfg.springmarket.security.handler.CustomAccesDeniedHandler;
+import com.tfg.springmarket.security.handler.CustomLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,12 +28,14 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomAccesDeniedHandler customAccesDeniedHandler;
+    private final CustomLogoutHandler logoutHandler;
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, JwtAuthenticationFilter jwtAuthenticationFilter, CustomAccesDeniedHandler customAccesDeniedHandler) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, JwtAuthenticationFilter jwtAuthenticationFilter, CustomAccesDeniedHandler customAccesDeniedHandler, CustomLogoutHandler logoutHandler) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.customAccesDeniedHandler = customAccesDeniedHandler;
+        this.logoutHandler = logoutHandler;
     }
 
     @Bean
@@ -48,6 +53,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(l -> l.logoutUrl("/logout")
+                        .addLogoutHandler(logoutHandler)
+                        .logoutSuccessHandler(
+                                (request, response, authentication) -> SecurityContextHolder.clearContext()
+                        ))
                 .build();
     }
 

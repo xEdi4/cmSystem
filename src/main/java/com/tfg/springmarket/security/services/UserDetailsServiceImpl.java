@@ -1,4 +1,4 @@
-package com.tfg.springmarket.security;
+package com.tfg.springmarket.security.services;
 
 import com.tfg.springmarket.model.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

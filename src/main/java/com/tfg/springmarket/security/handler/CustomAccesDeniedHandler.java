@@ -1,4 +1,4 @@
-package com.tfg.springmarket.config;
+package com.tfg.springmarket.security.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

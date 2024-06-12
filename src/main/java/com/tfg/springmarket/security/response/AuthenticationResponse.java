@@ -1,4 +1,4 @@
-package com.tfg.springmarket.model.entities;
+package com.tfg.springmarket.security.response;
 
 import lombok.Getter;
 
