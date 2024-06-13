@@ -75,7 +75,11 @@ public class EstablecimientoController {
     @GetMapping("/{id}")
     public ResponseEntity<Establecimiento> obtenerEstablecimientoPorId(@PathVariable Long id) {
         Establecimiento establecimiento = establecimientoService.obtenerEstablecimientoPorId(id);
-        return ResponseEntity.ok(establecimiento);
+        if (establecimiento != null) {
+            return ResponseEntity.ok(establecimiento);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")

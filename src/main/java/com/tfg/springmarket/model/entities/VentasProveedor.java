@@ -29,7 +29,7 @@ public class VentasProveedor implements Serializable {
     private Proveedor proveedor;
 
     @ManyToOne
-    @JoinColumn(name = "establecimiento_id")
+    @JoinColumn(name = "establecimiento_id",referencedColumnName = "id")
     private Establecimiento establecimiento;
 
     @ManyToOne
