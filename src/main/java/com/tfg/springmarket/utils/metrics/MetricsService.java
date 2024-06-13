@@ -1,8 +1,10 @@
 package com.tfg.springmarket.utils.metrics;
 
+import com.tfg.springmarket.dto.ProductSalesCountDTO;
 import com.tfg.springmarket.model.repositories.VentasEstablecimientoRepository;
 import com.tfg.springmarket.model.repositories.VentasProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,10 +20,11 @@ public class MetricsService {
     @Autowired
     private VentasProveedorRepository ventasProveedorRepository;
 
-    public List<Object[]> getTop3ProductosEstablecimiento(Long establecimientoId, int ano, int mes) {
+    public List<ProductSalesCountDTO> getTop3ProductosEstablecimiento(Long establecimientoId, int ano, int mes) {
+
         LocalDate fechaInicio = LocalDate.of(ano, mes, 1);
         LocalDate fechaFin = YearMonth.of(ano, mes).atEndOfMonth();
-        return ventasEstablecimientoRepository.findTop3ProductosByMesAndAno(fechaInicio, fechaFin);
+        return ventasEstablecimientoRepository.findTopProductsBySalesCountBetweenDates(fechaInicio, fechaFin, PageRequest.of(0,3));
     }
 
     public List<Object[]> getTop3ProductosProveedor(Long proveedorId, int ano, int mes) {

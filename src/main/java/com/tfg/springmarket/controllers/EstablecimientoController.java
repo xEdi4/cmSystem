@@ -1,5 +1,6 @@
 package com.tfg.springmarket.controllers;
 
+import com.tfg.springmarket.dto.ProductSalesCountDTO;
 import com.tfg.springmarket.model.entities.Establecimiento;
 import com.tfg.springmarket.model.entities.VentasEstablecimiento;
 import com.tfg.springmarket.model.entities.VentasProveedor;
@@ -28,20 +29,20 @@ public class EstablecimientoController {
     @Autowired
     private MetricsService metricsService;
 
-    @GetMapping("/{id}/top3productos")
-    public List<Object[]> getTop3ProductosEstablecimiento(@RequestParam Long establecimientoId, @RequestBody int ano, @RequestBody int mes) {
+    @GetMapping("/{establecimientoId}/top3productos")
+    public List<ProductSalesCountDTO> getTop3ProductosEstablecimiento(@PathVariable Long establecimientoId, @RequestParam int ano, @RequestParam int mes) {
         return metricsService.getTop3ProductosEstablecimiento(establecimientoId, ano, mes);
     }
 
     @GetMapping("/{id}/ingresos-gastos-beneficios")
-    public Object[] getIngresosGastosBeneficiosEstablecimiento(@RequestBody int ano, @RequestBody int mes) {
+    public Object[] getIngresosGastosBeneficiosEstablecimiento(@RequestParam int ano, @RequestParam int mes) {
         return metricsService.getIngresosGastosBeneficiosEstablecimiento(ano, mes);
     }
 
     @GetMapping("/{id}/reporte")
     public ResponseEntity<byte[]> generarReporte(@PathVariable Long id,
-                                                 @RequestBody String fechaInicio,
-                                                 @RequestBody String fechaFin) {
+                                                 @RequestParam String fechaInicio,
+                                                 @RequestParam String fechaFin) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
         LocalDate fin = LocalDate.parse(fechaFin, formatter);
