@@ -28,39 +28,6 @@ public class EstablecimientoController {
 
     @Autowired
     private MetricsService metricsService;
-
-    @GetMapping("/{establecimientoId}/top3productos")
-    public List<ProductSalesCountDTO> getTop3ProductosEstablecimiento(@PathVariable Long establecimientoId, @RequestParam int ano, @RequestParam int mes) {
-        return metricsService.getTop3ProductosEstablecimiento(establecimientoId, ano, mes);
-    }
-
-    @GetMapping("/{id}/ingresos-gastos-beneficios")
-    public Object[] getIngresosGastosBeneficiosEstablecimiento(@RequestParam int ano, @RequestParam int mes) {
-        return metricsService.getIngresosGastosBeneficiosEstablecimiento(ano, mes);
-    }
-
-    @GetMapping("/{id}/reporte")
-    public ResponseEntity<byte[]> generarReporte(@PathVariable Long id,
-                                                 @RequestParam String fechaInicio,
-                                                 @RequestParam String fechaFin) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
-        LocalDate fin = LocalDate.parse(fechaFin, formatter);
-
-        List<VentasEstablecimiento> ventas = establecimientoService.obtenerVentasPorEstablecimiento(id, inicio, fin);
-        List<VentasProveedor> compras = establecimientoService.obtenerComprasPorEstablecimiento(id, inicio, fin);
-
-        ByteArrayOutputStream baos = PDFGenerator.generarReporteEstablecimiento(ventas, compras, inicio, fin);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("reporte_establecimiento.pdf", "reporte_establecimiento.pdf");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(baos.toByteArray());
-    }
-
     @PostMapping
     public ResponseEntity<Establecimiento> agregarEstablecimiento(@RequestBody Establecimiento establecimiento) {
         Establecimiento establecimientoGuardado = establecimientoService.agregarEstablecimiento(establecimiento);

@@ -22,29 +22,6 @@ public class ProveedorController {
 
     @Autowired
     private ProveedorService proveedorService;
-
-    @GetMapping("/{id}/reporte")
-    public ResponseEntity<byte[]> generarReporte(@PathVariable Long id,
-                                                 @RequestBody String fechaInicio,
-                                                 @RequestBody String fechaFin) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
-        LocalDate fin = LocalDate.parse(fechaFin, formatter);
-
-
-        List<VentasProveedor> ventas = proveedorService.obtenerVentasPorProveedor(id, inicio, fin);
-
-        ByteArrayOutputStream baos = PDFGenerator.generarReporteProveedor(ventas, inicio, fin);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("reporte_proveedor.pdf", "reporte_proveedor.pdf");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(baos.toByteArray());
-    }
-
     @PostMapping
     public ResponseEntity<Proveedor> agregarProveedor(@RequestBody Proveedor proveedor) {
         Proveedor proveedorGuardado = proveedorService.agregarProveedor(proveedor);
