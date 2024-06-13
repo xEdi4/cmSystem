@@ -80,7 +80,7 @@ public class ComprasService {
             ventasProveedorRepository.save(ventasProveedor);
 
             // Actualizar o crear el producto en el establecimiento
-            ProductosEstablecimiento productosEstablecimiento = productosEstablecimientoRepository.findByEstablecimientoAndNombre(establecimiento, productosProveedor.getNombre());
+            ProductosEstablecimiento productosEstablecimiento = productosEstablecimientoRepository.findByEstablecimientoAndId(establecimiento, productoProveedorId).orElse(null);
             if (productosEstablecimiento == null) {
                 productosEstablecimiento = new ProductosEstablecimiento();
                 productosEstablecimiento.setNombre(productosProveedor.getNombre());

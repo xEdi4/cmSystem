@@ -40,6 +40,7 @@ public class VentasEstablecimientoService {
 
             // Registrar la ventasEstablecimiento
             VentasEstablecimiento ventasEstablecimiento = new VentasEstablecimiento();
+            ventasEstablecimiento.setEstablecimiento(productosEstablecimiento.getEstablecimiento());
             ventasEstablecimiento.setProductosEstablecimiento(productosEstablecimiento);
             ventasEstablecimiento.setCantidad(ventaDTO.getCantidad());
             ventasEstablecimiento.setPrecioVenta(productosEstablecimiento.getPrecioVenta());
@@ -50,6 +51,8 @@ public class VentasEstablecimientoService {
             // Actualizar el stock en el establecimiento
             productosEstablecimiento.setStock(productosEstablecimiento.getStock() - ventaDTO.getCantidad());
             productosEstablecimientoRepository.save(productosEstablecimiento);
+
+            resultado.append("Venta con id "+ventasEstablecimiento.getId() +" ha sido guardada");
         }
 
         return resultado.toString();
