@@ -49,10 +49,15 @@ public class ComprasService {
             Long productoProveedorId = compra.getProductoProveedorId();
             Integer cantidad = compra.getCantidad();
 
+            if (productoProveedorId == null) {
+                resultado.append("ID del producto del proveedor es nulo").append("\n");
+                continue;
+            }
+
             ProductosProveedor productosProveedor = productosProveedorRepository.findByIdAndActivoTrue(productoProveedorId).orElse(null);
 
             if (productosProveedor == null) {
-                resultado.append("Producto del proveedor no encontrado: ").append(productoProveedorId).append("\n");
+                resultado.append("Producto del proveedor no encontrado para ID: ").append(productoProveedorId).append("\n");
                 continue;
             }
 
@@ -69,6 +74,7 @@ public class ComprasService {
             VentasProveedor ventasProveedor = new VentasProveedor();
             ventasProveedor.setProductosProveedor(productosProveedor);
             ventasProveedor.setCantidad(cantidad);
+            ventasProveedor.setProveedor(productosProveedor.getProveedor());
             ventasProveedor.setPrecioVenta(productosProveedor.getPrecioVenta());
             ventasProveedor.setFechaVenta(LocalDate.now());
             ventasProveedorRepository.save(ventasProveedor);
