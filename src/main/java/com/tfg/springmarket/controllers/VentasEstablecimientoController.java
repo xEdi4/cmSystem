@@ -2,6 +2,7 @@ package com.tfg.springmarket.controllers;
 
 import com.tfg.springmarket.dto.ProductSalesCountDTO;
 import com.tfg.springmarket.dto.VentaDTO;
+import com.tfg.springmarket.model.entities.Establecimiento;
 import com.tfg.springmarket.model.entities.VentasEstablecimiento;
 import com.tfg.springmarket.model.entities.VentasProveedor;
 import com.tfg.springmarket.model.repositories.VentasEstablecimientoRepository;
@@ -46,10 +47,11 @@ public class VentasEstablecimientoController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
 
+        Establecimiento establecimiento = establecimientoService.obtenerEstablecimientoPorId(establecimientoId);
         List<VentasEstablecimiento> ventas = ventasEstablecimientoRepository.findByEstablecimientoIdAndFechaVentaBetween(establecimientoId, fechaInicio, fechaFin);
         List<VentasProveedor> compras = ventasProveedorRepository.findByEstablecimientoIdAndFechaVentaBetween(establecimientoId, fechaInicio, fechaFin);
 
-        ByteArrayOutputStream baos = PDFGenerator.generarReporteEstablecimiento(ventas, compras, fechaInicio, fechaFin);
+        ByteArrayOutputStream baos = PDFGenerator.generarReporteEstablecimiento(establecimiento,ventas, compras, fechaInicio, fechaFin);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=reporte_establecimiento_" + establecimientoId + ".pdf")
@@ -70,10 +72,11 @@ public class VentasEstablecimientoController {
         LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
         LocalDate fin = LocalDate.parse(fechaFin, formatter);
 
+        Establecimiento establecimiento = establecimientoService.obtenerEstablecimientoPorId(id);
         List<VentasEstablecimiento> ventas = establecimientoService.obtenerVentasPorEstablecimiento(id, inicio, fin);
         List<VentasProveedor> compras = establecimientoService.obtenerComprasPorEstablecimiento(id, inicio, fin);
 
-        ByteArrayOutputStream baos = PDFGenerator.generarReporteEstablecimiento(ventas, compras, inicio, fin);
+        ByteArrayOutputStream baos = PDFGenerator.generarReporteEstablecimiento(establecimiento,ventas, compras, inicio, fin);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

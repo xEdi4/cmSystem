@@ -16,12 +16,11 @@ import java.util.List;
 
 public class PDFGenerator {
 
-    public static ByteArrayOutputStream generarReporteEstablecimiento(List<VentasEstablecimiento> ventas, List<VentasProveedor> compras, LocalDate fechaInicio, LocalDate fechaFin) {
+    public static ByteArrayOutputStream generarReporteEstablecimiento(Establecimiento establecimiento,List<VentasEstablecimiento> ventas, List<VentasProveedor> compras, LocalDate fechaInicio, LocalDate fechaFin) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
-        Establecimiento establecimiento = new Establecimiento();
 
         // Título en negrita
         Paragraph title = new Paragraph("Reporte de Ventas del Establecimiento")
@@ -63,6 +62,7 @@ public class PDFGenerator {
         // Espacio entre secciones
         document.add(new Paragraph("\n"));
 
+        document.add(new Paragraph("Detalle de Ventas"));
         // Reporte de Ventas del Establecimiento
         Table tableVentas = new Table(new float[]{3, 3});
         tableVentas.addHeaderCell("Nombre Producto");
