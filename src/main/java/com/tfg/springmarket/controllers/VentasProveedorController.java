@@ -1,6 +1,7 @@
 package com.tfg.springmarket.controllers;
 
 
+import com.tfg.springmarket.model.entities.Proveedor;
 import com.tfg.springmarket.model.entities.VentasProveedor;
 import com.tfg.springmarket.model.repositories.VentasProveedorRepository;
 import com.tfg.springmarket.services.ProveedorService;
@@ -34,12 +35,15 @@ public class VentasProveedorController {
     @GetMapping("/proveedor/{proveedorId}/reporte")
     public ResponseEntity<byte[]> generarReporteProveedor(
             @PathVariable Long proveedorId,
-            @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+            @RequestParam String fechaInicio,
+            @RequestParam String fechaFin) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate inicio = LocalDate.parse(fechaInicio, formatter);
+        LocalDate fin = LocalDate.parse(fechaFin, formatter);
 
-        List<VentasProveedor> ventas = ventasProveedorRepository.findByProveedorIdAndFechaVentaBetween(proveedorId, fechaInicio, fechaFin);
-
-        ByteArrayOutputStream baos = PDFGenerator.generarReporteProveedor(ventas, fechaInicio, fechaFin);
+        Proveedor proveedor = proveedorService.obtenerProveedorPorId(proveedorId);
+        List<VentasProveedor> ventas = ventasProveedorRepository.findByProveedorIdAndFechaVentaBetween(proveedorId, inicio, fin);
+        ByteArrayOutputStream baos = PDFGenerator.generarReporteProveedor(proveedor,ventas, inicio, fin);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=reporte_proveedor_" + proveedorId + ".pdf")

@@ -96,13 +96,11 @@ public class PDFGenerator {
         return baos;
     }
 
-    public static ByteArrayOutputStream generarReporteProveedor(List<VentasProveedor> ventas, LocalDate fechaInicio, LocalDate fechaFin) {
+    public static ByteArrayOutputStream generarReporteProveedor(Proveedor proveedor,List<VentasProveedor> ventas, LocalDate fechaInicio, LocalDate fechaFin) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
-        Proveedor proveedor = new Proveedor();
-
         // Título en negrita
         Paragraph title = new Paragraph("Reporte de Ventas del Proveedor")
                 .setBold()
