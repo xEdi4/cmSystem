@@ -23,7 +23,7 @@ public class ProductosEstablecimiento implements Serializable {
     private Double precioCoste;
 
     @Column(name = "precio_venta")
-    private BigDecimal precioVenta;
+    private Double precioVenta;
 
     @Column(name = "stock")
     private Integer stock;
