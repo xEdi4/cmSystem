@@ -1,11 +1,15 @@
 package com.tfg.springmarket.controllers;
 
 import com.tfg.springmarket.model.entities.ProductosProveedor;
+import com.tfg.springmarket.model.entities.Usuario;
 import com.tfg.springmarket.services.ProductosProveedorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +18,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*") // Esto permite solicitudes CORS desde cualquier origen
 @RestController
-@RequestMapping("/proveedores/productos")
+@RequestMapping("/proveedores")
 public class ProductosProveedorController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductosProveedorController.class);
@@ -22,39 +26,79 @@ public class ProductosProveedorController {
     @Autowired
     private ProductosProveedorService productosProveedorService;
 
-    @PostMapping("/{proveedorId}")
-    public ResponseEntity<List<ProductosProveedor>> agregarProductosProveedor(@PathVariable Long proveedorId, @RequestParam("file") MultipartFile file) {
+    @PostMapping("/productos")
+    public ResponseEntity<List<ProductosProveedor>> agregarProductosProveedor(@RequestParam("file") MultipartFile file) {
         try {
-            List<ProductosProveedor> productosDelArchivo = productosProveedorService.parsearArchivoJSON(file);
-            return ResponseEntity.ok(productosProveedorService.agregarProductosProveedor(proveedorId, productosDelArchivo));
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated()) {
+                Usuario usuario = (Usuario) authentication.getPrincipal();
+                Long proveedorId = usuario.getId();
+
+                List<ProductosProveedor> productosDelArchivo = productosProveedorService.parsearArchivoJSON(file);
+                return ResponseEntity.ok(productosProveedorService.agregarProductosProveedor(proveedorId, productosDelArchivo));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
         } catch (IOException e) {
             logger.error("Error al procesar el archivo JSON", e);
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @GetMapping("/{proveedorId}")
-    public ResponseEntity<List<ProductosProveedor>> obtenerTodosLosProductosProveedor(@PathVariable Long proveedorId) {
-        List<ProductosProveedor> productosProveedor = productosProveedorService.obtenerTodosLosProductosProveedor(proveedorId);
-        return ResponseEntity.ok(productosProveedor);
+    @GetMapping("/productos")
+    public ResponseEntity<List<ProductosProveedor>> obtenerTodosLosProductosProveedor() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Usuario usuario = (Usuario) authentication.getPrincipal();
+            Long proveedorId = usuario.getId();
+
+            List<ProductosProveedor> productosProveedor = productosProveedorService.obtenerTodosLosProductosProveedor(proveedorId);
+            return ResponseEntity.ok(productosProveedor);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-    @GetMapping
+    @GetMapping("/allProductos")
     public ResponseEntity<List<ProductosProveedor>> obtenerTodosLosProductos() {
-        List<ProductosProveedor> productosProveedor = productosProveedorService.obtenerTodosLosProductos();
-        return ResponseEntity.ok(productosProveedor);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Usuario usuario = (Usuario) authentication.getPrincipal();
+            Long proveedorId = usuario.getId();
+
+            List<ProductosProveedor> productosProveedor = productosProveedorService.obtenerTodosLosProductos();
+            return ResponseEntity.ok(productosProveedor);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-    @PutMapping("/{proveedorId}/{id}")
-    public ResponseEntity<ProductosProveedor> actualizarProductoProveedor(@PathVariable Long proveedorId, @PathVariable Long id, @RequestBody ProductosProveedor productoProveedor) {
-        ProductosProveedor productoProveedorActualizado = productosProveedorService.actualizarProductoProveedor(proveedorId, id, productoProveedor);
-        return ResponseEntity.ok(productoProveedorActualizado);
+    @PutMapping("/productos/{id}")
+    public ResponseEntity<ProductosProveedor> actualizarProductoProveedor(@PathVariable Long id, @RequestBody ProductosProveedor productoProveedor) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Usuario usuario = (Usuario) authentication.getPrincipal();
+            Long proveedorId = usuario.getId();
+
+            ProductosProveedor productoProveedorActualizado = productosProveedorService.actualizarProductoProveedor(proveedorId, id, productoProveedor);
+            return ResponseEntity.ok(productoProveedorActualizado);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-    @DeleteMapping("/{proveedorId}/{id}")
-    public ResponseEntity<?> eliminarProductoProveedor(@PathVariable Long proveedorId, @PathVariable Long id) {
-        productosProveedorService.eliminarProductoProveedor(proveedorId, id);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/productos/{id}")
+    public ResponseEntity<?> eliminarProductoProveedor(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Usuario usuario = (Usuario) authentication.getPrincipal();
+            Long proveedorId = usuario.getId();
+
+            productosProveedorService.eliminarProductoProveedor(proveedorId, id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
 }

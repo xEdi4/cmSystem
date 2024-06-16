@@ -26,7 +26,6 @@ public class ProductosEstablecimientoService {
             productoActualizado.setPrecioCoste(productoEstablecimiento.getPrecioCoste());
             productoActualizado.setPrecioVenta(productoEstablecimiento.getPrecioVenta());
             productoActualizado.setStock(productoEstablecimiento.getStock());
-            productoActualizado.setProveedor(productoEstablecimiento.getProveedor());
             return productosEstablecimientoRepository.save(productoActualizado);
         } else {
             return null; // Manejar el caso de no encontrado si es necesario
