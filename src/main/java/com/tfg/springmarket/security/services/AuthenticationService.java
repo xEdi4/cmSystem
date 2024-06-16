@@ -34,9 +34,9 @@ public class AuthenticationService {
     public AuthenticationResponse register(Usuario request) {
         Usuario usuario = new Usuario();
         usuario.setNombre(request.getNombre());
-        usuario.setApellidos(request.getApellidos());
-        usuario.setUsuario(request.getUsuario());
-        usuario.setContraseña(passwordEncoder.encode(request.getContraseña()));
+        usuario.setTelefono(request.getTelefono());
+        usuario.setCorreo(request.getCorreo());
+        usuario.setContrasena(passwordEncoder.encode(request.getContrasena()));
 
         usuario.setRol(request.getRol());
 
@@ -58,7 +58,7 @@ public class AuthenticationService {
                 )
         );
 
-        Usuario user = usuarioRepository.findByUsuario(request.getUsername()).orElseThrow();
+        Usuario user = usuarioRepository.findByCorreo(request.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
 
         revokeAllTokenByUser(user);

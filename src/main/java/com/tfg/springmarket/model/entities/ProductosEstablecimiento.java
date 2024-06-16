@@ -31,11 +31,11 @@ public class ProductosEstablecimiento implements Serializable {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "establecimiento_id", referencedColumnName = "id")
-    private Establecimiento establecimiento;
+    private Usuario establecimiento;
 
     @ManyToOne
     @JoinColumn(name = "proveedor_id", referencedColumnName = "id")
-    private Proveedor proveedor;
+    private Usuario proveedor;
 
     @JsonIgnore
     @Column(name = "activo")

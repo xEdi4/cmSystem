@@ -32,7 +32,8 @@ public class JwtService {
         String username = extractUsername(token);
 
         boolean isValidToken = tokenRepository.findByToken(token)
-                .map(t -> !t.isLoggedOut()).orElse(false);
+                .map(t -> !t.isLoggedOut())
+                .orElse(false);
 
         return (username.equals(user.getUsername())) && !isTokenExpired(token) && isValidToken;
     }
@@ -59,8 +60,11 @@ public class JwtService {
     }
 
     public String generateToken(Usuario usuario) {
+        String rol = usuario.getRol().toString(); // Suponiendo que usuario.getRol() es un Enum
+
         return Jwts.builder()
                 .subject(usuario.getUsername())
+                .claim("rol", rol)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 1000))
                 .signWith(getSigninKey())

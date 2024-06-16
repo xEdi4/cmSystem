@@ -1,5 +1,6 @@
 package com.tfg.springmarket.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,50 +19,59 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nombre")
     private String nombre;
 
-    private String apellidos;
+    @Column(name = "telefono")
+    private String telefono;
 
-    private String usuario;
+    @Column(name = "correo")
+    private String correo;
+    
+    @Column(name = "contrasena")
+    private String contrasena;
 
-    private String contraseña;
-
+    @Column(name = "rol")
     @Enumerated(value = EnumType.STRING)
     Rol rol;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Token> tokens;
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(rol.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + rol.name()));
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
-        return this.contraseña;
+        return this.contrasena;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
-        return this.usuario;
+        return this.correo;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

@@ -27,7 +27,7 @@ public class ProductosProveedor implements Serializable {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "proveedor_id", referencedColumnName = "id")
-    private Proveedor proveedor;
+    private Usuario proveedor;
 
     @JsonIgnore
     @Column(name = "activo")

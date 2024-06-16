@@ -39,14 +39,8 @@ public class VentasEstablecimientoService {
                 continue;
             }
 
-            // Registrar la ventasEstablecimiento
-            VentasEstablecimiento ventasEstablecimiento = new VentasEstablecimiento();
-            ventasEstablecimiento.setProductosEstablecimiento(productosEstablecimiento);
-            ventasEstablecimiento.setCantidad(ventaDTO.getCantidad());
-            ventasEstablecimiento.setPrecioVenta(productosEstablecimiento.getPrecioVenta());
-            ventasEstablecimiento.setPrecioCoste(productosEstablecimiento.getPrecioCoste());
-            ventasEstablecimiento.setFechaVenta(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            ventaRepository.save(ventasEstablecimiento);
+            // Registrar la venta
+            registrarVenta(productosEstablecimiento, ventaDTO.getCantidad());
 
             // Actualizar el stock en el establecimiento
             productosEstablecimiento.setStock(productosEstablecimiento.getStock() - ventaDTO.getCantidad());
@@ -55,4 +49,26 @@ public class VentasEstablecimientoService {
 
         return resultado.toString();
     }
+
+    private void registrarVenta(ProductosEstablecimiento productosEstablecimiento, int cantidad) {
+        // Registrar la venta en la base de datos
+        VentasEstablecimiento ventasEstablecimiento = new VentasEstablecimiento();
+        ventasEstablecimiento.setProductosEstablecimiento(productosEstablecimiento);
+        ventasEstablecimiento.setCantidad(cantidad);
+        ventasEstablecimiento.setPrecioVenta(productosEstablecimiento.getPrecioVenta());
+        ventasEstablecimiento.setPrecioCoste(productosEstablecimiento.getPrecioCoste());
+        ventasEstablecimiento.setFechaVenta(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        ventaRepository.save(ventasEstablecimiento);
+    }
+
+    public boolean verificarProductosPertenecenAlProveedor(Long establecimientoId, List<VentaDTO> ventasDTO) {
+        for (VentaDTO ventaDTO : ventasDTO) {
+            ProductosEstablecimiento productosEstablecimiento = productosEstablecimientoRepository.findByIdAndActivoTrue(ventaDTO.getProductoEstablecimientoId()).orElse(null);
+            if (productosEstablecimiento == null || !productosEstablecimiento.getEstablecimiento().getId().equals(establecimientoId)) {
+                return false; // Al menos uno de los productos no pertenece al proveedor
+            }
+        }
+        return true; // Todos los productos pertenecen al proveedor
+    }
+
 }

@@ -1,14 +1,8 @@
 package com.tfg.springmarket.services;
 
 import com.tfg.springmarket.dto.CompraDTO;
-import com.tfg.springmarket.model.entities.Establecimiento;
-import com.tfg.springmarket.model.entities.ProductosEstablecimiento;
-import com.tfg.springmarket.model.entities.ProductosProveedor;
-import com.tfg.springmarket.model.entities.VentasProveedor;
-import com.tfg.springmarket.model.repositories.EstablecimientoRepository;
-import com.tfg.springmarket.model.repositories.ProductosEstablecimientoRepository;
-import com.tfg.springmarket.model.repositories.ProductosProveedorRepository;
-import com.tfg.springmarket.model.repositories.VentasProveedorRepository;
+import com.tfg.springmarket.model.entities.*;
+import com.tfg.springmarket.model.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,17 +20,17 @@ public class ComprasService {
     private ProductosEstablecimientoRepository productosEstablecimientoRepository;
 
     @Autowired
-    private EstablecimientoRepository establecimientoRepository;
-
-    @Autowired
     private ProductosProveedorRepository productosProveedorRepository;
 
     @Autowired
     private VentasProveedorRepository ventasProveedorRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     @Transactional
     public String comprarProductos(Long establecimientoId, List<CompraDTO> compras) {
-        Establecimiento establecimiento = establecimientoRepository.findById(establecimientoId).orElse(null);
+        Usuario establecimiento = usuarioRepository.findById(establecimientoId).orElse(null);
 
         if (establecimiento == null) {
             return "Establecimiento no encontrado";

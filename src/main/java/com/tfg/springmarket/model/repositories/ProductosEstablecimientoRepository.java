@@ -1,7 +1,7 @@
 package com.tfg.springmarket.model.repositories;
 
-import com.tfg.springmarket.model.entities.Establecimiento;
 import com.tfg.springmarket.model.entities.ProductosEstablecimiento;
+import com.tfg.springmarket.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ public interface ProductosEstablecimientoRepository extends JpaRepository<Produc
 
     Optional<ProductosEstablecimiento> findByIdAndEstablecimientoIdAndActivoTrue(Long id, Long establecimientoId);
 
-    ProductosEstablecimiento findByEstablecimientoAndNombre(Establecimiento establecimiento, String nombre);
+    ProductosEstablecimiento findByEstablecimientoAndNombre(Usuario establecimiento, String nombre);
 
     Optional<ProductosEstablecimiento> findByIdAndActivoTrue(Long id);
 }
