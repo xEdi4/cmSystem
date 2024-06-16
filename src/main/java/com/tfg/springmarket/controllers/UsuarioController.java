@@ -36,7 +36,7 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/rol/proveedor")
+    @GetMapping("/proveedores")
     public ResponseEntity<List<UsuarioDTO>> obtenerUsuariosConRolProveedor() {
         List<UsuarioDTO> proveedores = usuarioService.obtenerUsuariosPorRol(Rol.PROVEEDOR);
         return ResponseEntity.ok(proveedores);
