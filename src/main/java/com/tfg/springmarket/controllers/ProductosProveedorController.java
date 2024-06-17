@@ -61,16 +61,14 @@ public class ProductosProveedorController {
 
     @GetMapping("/allProductos")
     public ResponseEntity<List<ProductosProveedor>> obtenerTodosLosProductos() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Usuario usuario = (Usuario) authentication.getPrincipal();
-            Long proveedorId = usuario.getId();
+        List<ProductosProveedor> productosProveedor = productosProveedorService.obtenerTodosLosProductos();
+        return ResponseEntity.ok(productosProveedor);
+    }
 
-            List<ProductosProveedor> productosProveedor = productosProveedorService.obtenerTodosLosProductos();
-            return ResponseEntity.ok(productosProveedor);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    @GetMapping("/productosProveedor/{id}")
+    public ResponseEntity<List<ProductosProveedor>> obtenerTodosLosProductosProveedorId(@PathVariable Long id) {
+        List<ProductosProveedor> productosProveedor = productosProveedorService.obtenerTodosLosProductosProveedor(id);
+        return ResponseEntity.ok(productosProveedor);
     }
 
     @PutMapping("/productos/{id}")

@@ -14,7 +14,7 @@ public interface ProductosEstablecimientoRepository extends JpaRepository<Produc
 
     Optional<ProductosEstablecimiento> findByIdAndEstablecimientoIdAndActivoTrue(Long id, Long establecimientoId);
 
-    ProductosEstablecimiento findByEstablecimientoAndNombre(Usuario establecimiento, String nombre);
+    Optional<ProductosEstablecimiento> findByEstablecimientoAndProveedorAndNombreAndActivoTrue(Usuario establecimiento, Usuario proveedor, String nombre);
 
     Optional<ProductosEstablecimiento> findByIdAndActivoTrue(Long id);
 }

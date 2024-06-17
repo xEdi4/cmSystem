@@ -45,7 +45,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req -> req.requestMatchers("/login/**", "/register/**",
                                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                                .requestMatchers("/proveedores/**").hasRole("PROVEEDOR")
+                                .requestMatchers("/proveedores/productos/**").hasRole("PROVEEDOR")
+                                .requestMatchers("/proveedores/allProductos").hasRole("ESTABLECIMIENTO")
+                                .requestMatchers("/proveedores/productosProveedor/**").hasRole("ESTABLECIMIENTO")
                                 .requestMatchers("/establecimientos/**").hasRole("ESTABLECIMIENTO")
                                 .requestMatchers("/usuarios/proveedores").hasRole("ESTABLECIMIENTO")
                                 .anyRequest().authenticated()

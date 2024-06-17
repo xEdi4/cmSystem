@@ -1,8 +1,14 @@
 package com.tfg.springmarket.services;
 
 import com.tfg.springmarket.dto.CompraDTO;
-import com.tfg.springmarket.model.entities.*;
-import com.tfg.springmarket.model.repositories.*;
+import com.tfg.springmarket.model.entities.ProductosEstablecimiento;
+import com.tfg.springmarket.model.entities.ProductosProveedor;
+import com.tfg.springmarket.model.entities.Usuario;
+import com.tfg.springmarket.model.entities.VentasProveedor;
+import com.tfg.springmarket.model.repositories.ProductosEstablecimientoRepository;
+import com.tfg.springmarket.model.repositories.ProductosProveedorRepository;
+import com.tfg.springmarket.model.repositories.UsuarioRepository;
+import com.tfg.springmarket.model.repositories.VentasProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +18,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ComprasService {
@@ -66,9 +73,12 @@ public class ComprasService {
             ventasProveedor.setFechaVenta(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ventasProveedorRepository.save(ventasProveedor);
 
-            // Actualizar o crear el producto en el establecimiento
-            ProductosEstablecimiento productosEstablecimiento = productosEstablecimientoRepository.findByEstablecimientoAndNombre(establecimiento, productosProveedor.getNombre());
-            if (productosEstablecimiento == null) {
+            // Obtener o crear el producto en el establecimiento
+            Optional<ProductosEstablecimiento> optionalProductosEstablecimiento = productosEstablecimientoRepository
+                    .findByEstablecimientoAndProveedorAndNombreAndActivoTrue(establecimiento, productosProveedor.getProveedor(), productosProveedor.getNombre());
+
+            ProductosEstablecimiento productosEstablecimiento;
+            if (optionalProductosEstablecimiento.isEmpty()) {
                 productosEstablecimiento = new ProductosEstablecimiento();
                 productosEstablecimiento.setNombre(productosProveedor.getNombre());
                 productosEstablecimiento.setPrecioCoste(productosProveedor.getPrecioVenta());
@@ -80,6 +90,7 @@ public class ComprasService {
                 productosEstablecimiento.setProveedor(productosProveedor.getProveedor());
                 productosEstablecimiento.setActivo(true); // Asegurarse de que el producto en el establecimiento esté activo
             } else {
+                productosEstablecimiento = optionalProductosEstablecimiento.get();
                 productosEstablecimiento.setStock(productosEstablecimiento.getStock() + cantidad);
             }
             productosEstablecimientoRepository.save(productosEstablecimiento);
