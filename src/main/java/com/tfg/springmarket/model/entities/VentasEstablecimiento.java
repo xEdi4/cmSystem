@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -22,10 +23,14 @@ public class VentasEstablecimiento implements Serializable {
     private Double precioCoste;
 
     @Column(name = "precio_venta")
-    private BigDecimal precioVenta;
+    private Double precioVenta;
 
     @Column(name = "fecha_venta")
-    private String fechaVenta;
+    private LocalDate fechaVenta;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "productos_establecimiento_id", referencedColumnName = "id")

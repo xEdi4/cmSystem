@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -70,7 +71,7 @@ public class ComprasService {
             ventasProveedor.setProductosProveedor(productosProveedor);
             ventasProveedor.setCantidad(cantidad);
             ventasProveedor.setPrecioVenta(productosProveedor.getPrecioVenta());
-            ventasProveedor.setFechaVenta(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ventasProveedor.setFechaVenta(LocalDate.now());
             ventasProveedorRepository.save(ventasProveedor);
 
             // Obtener o crear el producto en el establecimiento
@@ -82,8 +83,9 @@ public class ComprasService {
                 productosEstablecimiento = new ProductosEstablecimiento();
                 productosEstablecimiento.setNombre(productosProveedor.getNombre());
                 productosEstablecimiento.setPrecioCoste(productosProveedor.getPrecioVenta());
-                BigDecimal precioVenta = BigDecimal.valueOf(productosProveedor.getPrecioVenta() * 1.3)
-                        .setScale(2, RoundingMode.HALF_UP);
+                Double precioVenta = BigDecimal.valueOf(productosProveedor.getPrecioVenta() * 1.3)
+                        .setScale(2, RoundingMode.HALF_UP)
+                        .doubleValue();
                 productosEstablecimiento.setPrecioVenta(precioVenta);
                 productosEstablecimiento.setStock(cantidad);
                 productosEstablecimiento.setEstablecimiento(establecimiento);
