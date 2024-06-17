@@ -39,23 +39,6 @@ public class UsuarioService {
         return true;
     }
 
-
-    public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado")); // Maneja esto adecuadamente según tu lógica de negocio
-
-        // Actualizar datos del usuario
-        usuario.setNombre(usuarioDTO.getNombre());
-        usuario.setTelefono(usuarioDTO.getTelefono());
-        usuario.setCorreo(usuarioDTO.getCorreo());
-
-        // Guardar cambios en la base de datos
-        usuarioRepository.save(usuario);
-
-        // Convertir y devolver el DTO actualizado
-        return convertirADto(usuario);
-    }
-
     public UsuarioDTO convertirADto(Usuario usuario) {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setId(usuario.getId());

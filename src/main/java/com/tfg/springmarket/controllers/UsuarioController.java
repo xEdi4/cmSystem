@@ -39,23 +39,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
-    @PutMapping("/miCuenta/{id}")
-    public ResponseEntity<UsuarioDTO> actualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Usuario usuario = (Usuario) authentication.getPrincipal();
-            if (usuario.getId().equals(id)) {
-                UsuarioDTO usuarioActualizado = usuarioService.actualizarUsuario(id, usuarioDTO);
-                return ResponseEntity.ok(usuarioActualizado);
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // El usuario no tiene permiso para actualizar este ID
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
-
+    
     @PostMapping("/cambiarContrasena")
     public ResponseEntity<String> cambiarContrasena(@RequestBody CambiarContrasenaRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
