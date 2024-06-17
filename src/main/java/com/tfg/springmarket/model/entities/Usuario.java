@@ -22,12 +22,12 @@ public class Usuario implements UserDetails {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "telefono")
+    @Column(name = "telefono", unique = true)
     private String telefono;
 
-    @Column(name = "correo")
+    @Column(name = "correo", unique = true)
     private String correo;
-    
+
     @Column(name = "contrasena")
     private String contrasena;
 

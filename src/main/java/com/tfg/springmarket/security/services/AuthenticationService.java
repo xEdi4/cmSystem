@@ -6,6 +6,9 @@ import com.tfg.springmarket.model.repositories.TokenRepository;
 import com.tfg.springmarket.model.repositories.UsuarioRepository;
 import com.tfg.springmarket.security.response.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,23 +34,25 @@ public class AuthenticationService {
         this.tokenRepository = tokenRepository;
     }
 
-    public AuthenticationResponse register(Usuario request) {
-        Usuario usuario = new Usuario();
-        usuario.setNombre(request.getNombre());
-        usuario.setTelefono(request.getTelefono());
-        usuario.setCorreo(request.getCorreo());
-        usuario.setContrasena(passwordEncoder.encode(request.getContrasena()));
+    public ResponseEntity<AuthenticationResponse> register(Usuario request) {
+        try {
+            Usuario usuario = new Usuario();
+            usuario.setNombre(request.getNombre());
+            usuario.setTelefono(request.getTelefono());
+            usuario.setCorreo(request.getCorreo());
+            usuario.setContrasena(passwordEncoder.encode(request.getContrasena()));
+            usuario.setRol(request.getRol());
 
-        usuario.setRol(request.getRol());
+            usuario = usuarioRepository.save(usuario);
 
-        usuario = usuarioRepository.save(usuario);
+            String jwt = jwtService.generateToken(usuario);
+            saveUserToken(jwt, usuario);
 
-        String jwt = jwtService.generateToken(usuario);
-
-        // save the generated jwt
-        saveUserToken(jwt, usuario);
-
-        return new AuthenticationResponse(jwt);
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        } catch (DataIntegrityViolationException e) {
+            String errorMessage = "Ya existe una cuenta con este correo electrónico o teléfono.";
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthenticationResponse(errorMessage));
+        }
     }
 
     public AuthenticationResponse authenticate(Usuario request) {
