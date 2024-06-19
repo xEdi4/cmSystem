@@ -34,7 +34,7 @@ public class AuthenticationService {
         this.tokenRepository = tokenRepository;
     }
 
-    public ResponseEntity<AuthenticationResponse> register(Usuario request) {
+    public ResponseEntity<?> register(Usuario request) {
         try {
             Usuario usuario = new Usuario();
             usuario.setNombre(request.getNombre());
@@ -51,7 +51,7 @@ public class AuthenticationService {
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } catch (DataIntegrityViolationException e) {
             String errorMessage = "Ya existe una cuenta con este correo electrónico o teléfono.";
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthenticationResponse(errorMessage));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
         }
     }
 
